@@ -1,6 +1,9 @@
 # # scans and scan settings
 
+import os
+import subprocess
 import logging
+import nmap
 from threading import Thread
 
 from django.conf import settings
@@ -228,8 +231,45 @@ def gmap(request, pid):
 """
 Greg
 Status: in dev, on hold
-Self service tool for launching nessus scans
+Self service tool for launching nessus scans ------------------------------------------------------------>
 """
+def scan_demo(request):
+    if request.method == 'POST':
+        ip = ip_checkv4(request.POST['host'])
+        if ip:
+            nm_command = "nmap " + ip
+            results = subprocess.check_output(nm_command, shell=True)
+            return render(request,'dojo/scan_demo.html',{'results':results})
+        else:
+            results = "Invalid IP address"
+            return render(request,'dojo/scan_demo.html',{'results':results})
+    else:
+        return render(request,'dojo/scan_demo.html')
+
+def ip_checkv4(ip):
+    parts=ip.split(".")
+    if len(parts)<4 or len(parts)>4:
+        return False
+    else:
+        while len(parts)== 4:
+            a=int(parts[0])
+            b=int(parts[1])
+            c=int(parts[2])
+            d=int(parts[3])
+            if a<= 0 or a == 127 :
+                return False
+            elif d == 0:
+                return False
+            elif a>=255:
+                return False
+            elif b>=255 or b<0: 
+                return False
+            elif c>=255 or c<0:
+                return False
+            elif d>=255 or c<0:
+                return False
+            else:
+                return ip
 
 
 def launch_va(request, pid):
@@ -248,3 +288,4 @@ def launch_va(request, pid):
     return render(request,
                   "dojo/launch_va.html",
                   {'form': form, 'pid': pid})
+

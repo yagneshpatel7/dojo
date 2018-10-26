@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <form class="form-horizontal" action="" method="post">{% csrf_token %}
+        
+        <div class="form-group">
+        	<h3>Perform Nmap Scan</h3>
+            <div class="col-sm-offset-2 col-sm-10">
+            	<input type="text" name="host" placeholder="Enter Target IP" class="form-control"><br>
+                <input class="btn btn-primary" type="submit" value="Scan"/>
+            </div>
+        </div>
+    </form>
+    
+
+    {% if results %}<pre>{{results}}</pre>{% endif %}
+{% endblock %}

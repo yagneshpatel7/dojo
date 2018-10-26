@@ -14,4 +14,7 @@ urlpatterns = [
     # other
     url(r'^launch_va/(?P<pid>\d+)$', views.launch_va,
         name='launch_va'),
+    #demo-scan by diglin
+    url(r'^scan_demo$', views.scan_demo,
+        name='scan_demo'),
 ]
